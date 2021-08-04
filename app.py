@@ -4,6 +4,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import re
+import json
+from nltk.util import print_string
 
 
 app = Flask(__name__)
@@ -14,28 +16,41 @@ def home():
 
 @app.route('/predict',methods=['POST'])
 def predict():
-    score=0
-    if request.method == 'POST':
-        url = request.form['url']
+    scoreList = []
+    
+    # print(request.form)
+    dict = request.form
+    for key, value in dict.items():
+        print(f'{key} {value}')
+        score=0
+    # if request.method == 'POST':
+        url = value 
+        #request.form['urla']
         file = open("cc.txt", "w",encoding='utf-8')
         link=url
         findId=link.find('id=')
 
         url=link[findId+3:]
-        file.write(str(gs(
+        result = gs(
             url,
             lang='en', # defaults to 'en'
             country='us' # defaults to 'us'
-        )))
+        )
+        file.write(str(result))
         file.close()
-
+        
         myfile=[]
         with open("cc.txt",encoding='utf8') as mydata:
             for data in mydata:
                 myfile.append(data)
+        
+        filename = f'{key}.json'
+        with open(filename, 'w') as fp:
+            json.dump(result, fp)
 
-        start=myfile[0].find('comments')
+        start=myfile[0].find('description')
         end=myfile[0].find('editorsChoice')
+        appName=result.get('title')
         c=data[start:end]
 
         cleandata = re.sub('[^A-Za-z0-9]+',' ',c)
@@ -67,12 +82,20 @@ def predict():
             if word in neg:
                 total=total-1
         #         print("bad: "+word)
-            
-        score=total/tot
 
-    return render_template('result.html',score = score)
+        print(f'{total} {tot}')   
+        score=total/tot
+        scoreList.append([score, appName])
+        print(appName)
+        print(score)
+
+    for each in scoreList:
+        print(each)
+    
+
+    return render_template('result.html',scoreList = scoreList)
 
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=True, port=4000)
