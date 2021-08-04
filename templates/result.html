@@ -53,6 +53,18 @@
     p.top-info {
       margin: 10px 0;
     }
+
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 15px;
+    }
   </style>
 </head>
 
@@ -66,19 +78,16 @@
     <form>
       <p style="color:blue;font-size:20;text-align: center;"><b>Results :-</b></p>
       <div class="results">
-        {% for i in scoreList %}
-        <p> {{i}} </p>
-        {% endfor %}
-        <table border = 1>
+        <table border=2>
           {% for each in scoreList %}
-      
+
           <tr>
-             <th> {{ each[1] }} </th>
-             <td> {{ each[0] }} </td>
+            <th> {{ each[1] }} </th>
+            <td> {{ each[0] }} </td>
           </tr>
-      
+
           {% endfor %}
-       </table>
+        </table>
       </div>
     </form>
   </div>

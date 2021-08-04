@@ -88,7 +88,7 @@ def predict():
         scoreList.append([score, appName])
         print(appName)
         print(score)
-
+    scoreList.sort(reverse=True, key=lambda x:x[0])
     for each in scoreList:
         print(each)
     
