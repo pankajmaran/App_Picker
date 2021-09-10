@@ -79,10 +79,15 @@
       <p style="color:blue;font-size:20;text-align: center;"><b>Results :-</b></p>
       <div class="results">
         <table border=2>
+          <tr>
+            <th> App Name </th>
+            <th> Score </td>
+          </tr>
+
           {% for each in scoreList %}
 
           <tr>
-            <th> {{ each[1] }} </th>
+            <td> {{ each[1] }} </th>
             <td> {{ each[0] }} </td>
           </tr>
 
